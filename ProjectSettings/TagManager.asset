@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 4284876469
+    locked: 0
+  - name: Pista
+    uniqueID: 1747028749
+    locked: 0
+  - name: 
+    uniqueID: 3557934641
+    locked: 0
