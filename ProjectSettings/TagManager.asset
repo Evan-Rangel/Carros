@@ -42,11 +42,20 @@ TagManager:
     uniqueID: 0
     locked: 0
   - name: Background
-    uniqueID: 4284876469
+    uniqueID: 3894126271
     locked: 0
-  - name: Pista
-    uniqueID: 1747028749
+  - name: Roads
+    uniqueID: 3181130573
     locked: 0
-  - name: 
-    uniqueID: 3557934641
+  - name: Props
+    uniqueID: 2471420229
+    locked: 0
+  - name: Skidmarks
+    uniqueID: 2423270903
+    locked: 0
+  - name: Cars
+    uniqueID: 1040643723
+    locked: 0
+  - name: Particles
+    uniqueID: 2574950651
     locked: 0
