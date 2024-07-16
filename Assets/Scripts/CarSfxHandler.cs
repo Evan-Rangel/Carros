@@ -5,7 +5,7 @@ using UnityEngine.Audio;
 
 public class CarSfxHandler : MonoBehaviour
 {
-    #region Car Settings
+    #region Car SFX
     [Header("Mixer")]
     public AudioMixer audioMixer;
 
