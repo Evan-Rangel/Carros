@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 4015900045409506296}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.34, y: -21.52, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: -1113836723
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 84fb77646cb4e704ab247e253cc4604c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1bfb745a28d7b474f96608dee0612590, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -129,12 +129,12 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -1.28, y: 2.56}
-      - {x: -1.28, y: -2.56}
+    - - {x: -0.9, y: 2.56}
+      - {x: -0.9, y: -2.56}
       - {x: -0.8, y: -2.56}
       - {x: -0.8, y: 2.56}
-    - - {x: 1.28, y: 2.56}
-      - {x: 1.28, y: -2.56}
+    - - {x: 0.9, y: 2.56}
+      - {x: 0.9, y: -2.56}
       - {x: 0.8, y: -2.56}
       - {x: 0.8, y: 2.56}
   m_UseDelaunayMesh: 0
