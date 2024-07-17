@@ -1,31 +1,23 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using System.Linq;
 
 public class PositionHandler : MonoBehaviour
 {
-    #region Car Lap
+    //Other components
+    LeaderboardUIHandler leaderboardUIHandler;
+
     public List<CarLapCounter> carLapCounters = new List<CarLapCounter>();
-    #endregion
-
-    #region Local Variables
-
-    #endregion
-
-    #region Components
-
-    #endregion
-
-    #region Unity Default Functions
     private void Awake()
     {
-
+      
     }
 
-    private void Start()
+    // Start is called before the first frame update
+    void Start()
     {
-        //Get all Car lap counters in the scene
+        //Get all Car lap counters in the scene. 
         CarLapCounter[] carLapCounterArray = FindObjectsOfType<CarLapCounter>();
 
         //Store the lap counters in a list
@@ -33,26 +25,19 @@ public class PositionHandler : MonoBehaviour
 
         //Hook up the pased checkpoint event
         foreach (CarLapCounter lapCounters in carLapCounters)
-        {
             lapCounters.OnPassCheckpoint += OnPassCheckpoint;
-        }
+
+        //Get the leaderboard UI handler
+        leaderboardUIHandler = FindObjectOfType<LeaderboardUIHandler>();
+
+        //Ask the leaderboard handler to update the list
+        if(leaderboardUIHandler != null)
+            leaderboardUIHandler.UpdateList(carLapCounters);
     }
 
-    private void Update()
-    {
-
-    }
-
-    private void FixedUpdate()
-    {
-
-    }
-    #endregion
-
-    #region Functions
     void OnPassCheckpoint(CarLapCounter carLapCounter)
     {
-        //Sort the cars position first based on how many checkpoints they have passed, more is always better. Then sort on time where shorter time is better
+        //Sort the cars positon first based on how many checkpoints they have passed, more is always better. Then sort on time where shorter time is better
         carLapCounters = carLapCounters.OrderByDescending(s => s.GetNumberOfCheckpointsPassed()).ThenBy(s => s.GetTimeAtLastCheckPoint()).ToList();
 
         //Get the cars position
@@ -60,6 +45,20 @@ public class PositionHandler : MonoBehaviour
 
         //Tell the lap counter which position the car has
         carLapCounter.SetCarPosition(carPosition);
+
+        if (carLapCounter.IsRaceCompleted())
+        {
+            //Set players last position
+            int playerNumber = carLapCounter.GetComponent<CarInputHandler>().playerNumber;
+            GameManager.instance.SetDriversLastRacePosition(playerNumber, carPosition);
+
+            //Add points to championship
+            int championshipPointAwarded = FindObjectOfType<SpawnCars>().GetNumberOfCarsSpawned() - carPosition;
+            GameManager.instance.AddPointsToChampionship(playerNumber, championshipPointAwarded);
+        }
+
+        //Ask the leaderboard handler to update the list
+        if (leaderboardUIHandler != null)
+            leaderboardUIHandler.UpdateList(carLapCounters);
     }
-    #endregion
 }

@@ -4,14 +4,17 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - CheckPoint
+  - DontChangeLayer
   - Car
   - Jump
-  - DontChangeLayer
   - OverpassTrigger
-  - UnderpassTrigger
+  - UnderPassCollider
   - OverpassCollider
   - UnderpassCollider
+  - CheckPoint
+  - SpawnPoint
+  - AI
+  - UnderpassTrigger
   layers:
   - Default
   - TransparentFX
@@ -21,10 +24,10 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - ObjectOnUnderpass
+  - ObjectOnOverpass
+  - ObjectFlying
+  - Checkpoint
   - 
   - 
   - 
@@ -46,24 +49,33 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 4082560189
+    locked: 0
+  - name: RaceTrack
+    uniqueID: 647600455
+    locked: 0
+  - name: Props
+    uniqueID: 4192498347
+    locked: 0
+  - name: Skidmarks
+    uniqueID: 2563585051
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Background
-    uniqueID: 3894126271
+  - name: Car
+    uniqueID: 737327829
     locked: 0
-  - name: Roads
-    uniqueID: 3181130573
+  - name: RaceTrackOverpass
+    uniqueID: 2273039015
     locked: 0
-  - name: Props
-    uniqueID: 2471420229
+  - name: SkidmarksOverpass
+    uniqueID: 171196169
     locked: 0
-  - name: Skidmarks
-    uniqueID: 2423270903
-    locked: 0
-  - name: Cars
-    uniqueID: 1040643723
+  - name: Flying
+    uniqueID: 3170353983
     locked: 0
   - name: Particles
-    uniqueID: 2574950651
+    uniqueID: 3958561925
     locked: 0
