@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Unity.VisualScripting;
 
 public class CarAIHandler : MonoBehaviour
 {
     public enum AIMode { followPlayer, followWaypoints, followMouse };
-
+    public enum AIModel { AStar, Dijkstra, DecisionTree }
     [Header("AI settings")]
+    public AIModel model;
     public AIMode aiMode;
     public float maxSpeed = 16;
     public bool isAvoidingCars = true;
@@ -40,13 +42,15 @@ public class CarAIHandler : MonoBehaviour
     //Components
     TopDownCarController topDownCarController;
     AStarLite aStarLite;
+    DijkstraAI dijkstra;
 
+    
     //Awake is called when the script instance is being loaded.
     void Awake()
     {
         topDownCarController = GetComponent<TopDownCarController>();
         allWayPoints = FindObjectsOfType<WaypointNode>();
-
+        dijkstra= GetComponent<DijkstraAI>();
         aStarLite = GetComponent<AStarLite>();
 
         polygonCollider2D = GetComponentInChildren<PolygonCollider2D>();
@@ -63,7 +67,7 @@ public class CarAIHandler : MonoBehaviour
     // Update is called once per frame and is frame dependent
     void FixedUpdate()
     {
-        if (GameManager.instance.GetGameState() == GameStates.countDown)
+        if (GameManager.instance.GetGameState() == GameStates.countDown|| model==AIModel.DecisionTree)
             return;
 
         Vector2 inputVector = Vector2.zero;
@@ -77,7 +81,7 @@ public class CarAIHandler : MonoBehaviour
             case AIMode.followWaypoints:
                 if (temporaryWaypoints.Count == 0)
                     FollowWaypoints();
-                else FollowTemporaryWayPoints();
+                else if(model!=AIModel.DecisionTree)FollowTemporaryWayPoints();
 
                 break;
 
@@ -90,13 +94,12 @@ public class CarAIHandler : MonoBehaviour
         inputVector.y = ApplyThrottleOrBrake(inputVector.x);
 
         //If the AI is applying throttle but not manging to get any speed then lets run our stuck check.
-        if (topDownCarController.GetVelocityMagnitude() < 0.5f && Mathf.Abs(inputVector.y) > 0.01f && !isRunningStuckCheck)
+        if (topDownCarController.GetVelocityMagnitude() < 10f && Mathf.Abs(inputVector.y) > 0.01f && !isRunningStuckCheck && temporaryWaypoints.Count==0)
             StartCoroutine(StuckCheckCO());
 
         //Handle special case where the car has reversed for a while then it should check if it is still stuck. If it is not then it will drive forward again.
-        if (stuckCheckCounter >= 4 && !isRunningStuckCheck)
+        if (stuckCheckCounter >= 4 && !isRunningStuckCheck && temporaryWaypoints.Count == 0)
             StartCoroutine(StuckCheckCO());
-
 
         //Send the input to the car controller.
         topDownCarController.SetInputVector(inputVector);
@@ -357,8 +360,20 @@ public class CarAIHandler : MonoBehaviour
         //if we have not moved for a second then we are stuck
         if ((transform.position - initialStuckPosition).sqrMagnitude < 3)
         {
-            //Get a path to the desired position
-            temporaryWaypoints = aStarLite.FindPath(currentWaypoint.transform.position);
+            switch (model)
+            {
+                case AIModel.AStar:
+                    //Get a path to the desired position
+                    temporaryWaypoints = aStarLite.FindPath(currentWaypoint.transform.position);
+                    break;
+                case AIModel.Dijkstra:
+                    temporaryWaypoints = dijkstra.StartPathfinding(currentWaypoint.transform.position);
+                 
+                    break;
+                case AIModel.DecisionTree:
+                    break;
+
+            }
 
             //If there was no path found then it will be null so if that happens just make a new empty list.
             if (temporaryWaypoints == null)

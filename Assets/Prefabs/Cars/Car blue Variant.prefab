@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -900553251129613380, guid: d017faad03b9aa946ab12ed85bb3607f, type: 3}
+      propertyPath: isDebugActiveForCar
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 733638173380642315, guid: d017faad03b9aa946ab12ed85bb3607f, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -71,6 +75,10 @@ PrefabInstance:
     - target: {fileID: 6558350185343971735, guid: d017faad03b9aa946ab12ed85bb3607f, type: 3}
       propertyPath: m_Name
       value: Car blue Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 8660823105377264488, guid: d017faad03b9aa946ab12ed85bb3607f, type: 3}
+      propertyPath: model
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
