@@ -1,67 +1,104 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class DecisionTree : MonoBehaviour
 {
+    [SerializeField] Transform[] rayPoints;
+
     CarAIHandler aiHandler;
-    TopDownCarController topDownCarController;
-    DecisionNode firstNode;
-    [SerializeField] Transform[] raycastPositions;
-
-    [SerializeField] float raycastDistance;
-    List<Vector2> directions;
-    public Vector2 pos;
-    public Transform target;
-
+    public LayerMask ignoreLayer;
+    Vector2 ctarget;
+    int waypointCounter;
+    bool[] canSeeWaypoint = {true, true, true,true };
+    [SerializeField] bool isDebugActiveForCar = true;
 
     private void Awake()
     {
-        directions = new List<Vector2>();
-        foreach (Transform dir in raycastPositions)
-        {
-            directions.Add((dir.position- transform.position).normalized);
-        }
         aiHandler = GetComponent<CarAIHandler>();
-        topDownCarController = GetComponent<TopDownCarController>();
+    }
+    public List<Vector2> PathFinding(Vector2 target)
+    {
+        for (int i = 0; i < rayPoints.Length; i++)
+        {
+            canSeeWaypoint[i] = false;
+        }
+        waypointCounter = 0;
+        ctarget = target;
+        RaycastHit2D rightHit;
+        RaycastHit2D leftHit;
+        RaycastHit2D backtHit;
+        rightHit = Physics2D.Raycast(rayPoints[1].position, transform.right, 10, ~ignoreLayer);
+        leftHit = Physics2D.Raycast(rayPoints[2].position, transform.right*-1, 10, ~ignoreLayer);
+        backtHit = Physics2D.Raycast(rayPoints[3].position, transform.up*-1, 10, ~ignoreLayer);
+        StartCoroutine(RayToWaypoint());
+        List<Vector2> result = new List<Vector2>();
+        if (rightHit.collider == null)
+        {
+            result.Add(rayPoints[1].position+transform.right*4);
+        }
+        else
+        if (leftHit.collider == null)
+        {   
+            result.Add(rayPoints[2].position - (transform.right * 4));
+        }
+        else
+        if (rightHit.distance < leftHit.distance&& backtHit.distance< leftHit.distance)
+        {
+            result.Add(leftHit.point);
+        }
+        else 
+        if(rightHit.distance > backtHit.distance)
+        {
+            result.Add(rightHit.point);
+        }else
+        {
+            result.Add(backtHit.point);
+        }
+        StartCoroutine(CheckIfCanReachWaypoint());
+        return result;
     }
 
-    private void FixedUpdate()
+    IEnumerator RayToWaypoint()
     {
-        for (int i = 0; i < raycastPositions.Length; i++)
+        while (waypointCounter<2)
         {
-            RaycastHit2D raycastHit2D =Physics2D.Raycast(raycastPositions[i].position, directions[i],raycastDistance);
-            Debug.DrawRay(raycastPositions[i].position, directions[i]* raycastDistance, Color.black);
-            if (raycastHit2D.collider!=null )
+            CheckRaycast();
+            yield return new WaitForEndOfFrame();
+        }
+        yield break;
+    }
+    void CheckRaycast()
+    {
+        for (int i = 0; i < rayPoints.Length; i++)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(rayPoints[i].position, ctarget - (Vector2)rayPoints[i].position, Vector2.Distance(rayPoints[i].position, ctarget), ~ignoreLayer );
+            
+            if (hit.collider.CompareTag("Waypoint") && !canSeeWaypoint[i])
             {
-
+                Debug.Log(i + " See Waypoint");
+                canSeeWaypoint[i] = true;
+                waypointCounter++;
             }
         }
     }
-}
-
-public class DecisionTreeNode
-{
-    protected DecisionTreeNode leftNode;
-    protected DecisionTreeNode rightNode;
-
-    //protected UnityEvent ExcecuteEvent;
-}
-public class DecisionNode: DecisionTreeNode
-{
-    
-    public  DecisionTreeNode GetNextNode(
-        [Tooltip("Return the leftNode if value1 its less than value2")]
-        float value1, float value2)
+    IEnumerator CheckIfCanReachWaypoint()
     {
-        return value1 < value2 ? leftNode : rightNode;
+        yield return new WaitUntil(() => waypointCounter>=2);
+        Debug.Log("Find Waypoint");
+        aiHandler.RemoveTemporaryWaypointZero();
+        yield break;
     }
-}
-public class LeafNode: DecisionTreeNode
-{
-    public void Result()
-    { 
-        
+    private void OnDrawGizmos()
+    {
+        if (!isDebugActiveForCar)
+            return;
+        foreach (Transform _pos in rayPoints)
+        {
+            Gizmos.color=Color.yellow;
+            Gizmos.DrawLine(_pos.position, ctarget);
+        }
     }
+
 }
+

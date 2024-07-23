@@ -15,6 +15,7 @@ TagManager:
   - SpawnPoint
   - AI
   - UnderpassTrigger
+  - Waypoint
   layers:
   - Default
   - TransparentFX

@@ -37,7 +37,7 @@ public class DijkstraAI : MonoBehaviour
                 Collider2D hitColl2D = Physics2D.OverlapCircle(worldPosition, cellSize / 2f);
                 if (hitColl2D != null)
                 {
-                    if (hitColl2D.transform.root.CompareTag("AI") || hitColl2D.transform.root.CompareTag("Player") || hitColl2D.transform.CompareTag("CheckPoint"))
+                    if (hitColl2D.transform.root.CompareTag("AI") || hitColl2D.transform.root.CompareTag("Player") || hitColl2D.transform.CompareTag("CheckPoint") || hitColl2D.transform.CompareTag("Waypoint"))
                         continue;
                     dijkstraNodes[x, y].isObstacle = true;
                 }

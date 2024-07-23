@@ -17,7 +17,7 @@ public class CarAIHandler : MonoBehaviour
     public float skillLevel = 1.0f;
 
     //Local variables
-    Vector3 targetPosition = Vector3.zero;
+    public Vector3 targetPosition = Vector3.zero;
     Transform targetTransform = null;
     float orignalMaximumSpeed = 0;
 
@@ -43,7 +43,7 @@ public class CarAIHandler : MonoBehaviour
     TopDownCarController topDownCarController;
     AStarLite aStarLite;
     DijkstraAI dijkstra;
-
+    DecisionTree decisionTree;
     
     //Awake is called when the script instance is being loaded.
     void Awake()
@@ -52,7 +52,7 @@ public class CarAIHandler : MonoBehaviour
         allWayPoints = FindObjectsOfType<WaypointNode>();
         dijkstra= GetComponent<DijkstraAI>();
         aStarLite = GetComponent<AStarLite>();
-
+        decisionTree= GetComponent<DecisionTree>(); 
         polygonCollider2D = GetComponentInChildren<PolygonCollider2D>();
 
         orignalMaximumSpeed = maxSpeed;
@@ -67,7 +67,7 @@ public class CarAIHandler : MonoBehaviour
     // Update is called once per frame and is frame dependent
     void FixedUpdate()
     {
-        if (GameManager.instance.GetGameState() == GameStates.countDown|| model==AIModel.DecisionTree)
+        if (GameManager.instance.GetGameState() == GameStates.countDown)//|| model==AIModel.DecisionTree)
             return;
 
         Vector2 inputVector = Vector2.zero;
@@ -81,7 +81,7 @@ public class CarAIHandler : MonoBehaviour
             case AIMode.followWaypoints:
                 if (temporaryWaypoints.Count == 0)
                     FollowWaypoints();
-                else if(model!=AIModel.DecisionTree)FollowTemporaryWayPoints();
+                else FollowTemporaryWayPoints();
 
                 break;
 
@@ -104,7 +104,12 @@ public class CarAIHandler : MonoBehaviour
         //Send the input to the car controller.
         topDownCarController.SetInputVector(inputVector);
     }
-
+    public void RemoveTemporaryWaypointZero()
+    {
+        if(temporaryWaypoints.Count>0)
+        temporaryWaypoints.RemoveAt(0);
+        isFirstTemporaryWaypoint = false;
+    }
     //AI follows player
     void FollowPlayer()
     {
@@ -206,7 +211,9 @@ public class CarAIHandler : MonoBehaviour
         angleToTarget = Vector2.SignedAngle(transform.up, vectorToTarget);
         angleToTarget *= -1;
 
-        //We want the car to turn as much as possible if the angle is greater than 45 degrees and we wan't it to smooth out so if the angle is small we want the AI to make smaller corrections. 
+        //We want the car to turn as much as possible if the angle is greater than
+        //45 degrees and we wan't it to smooth out so if the angle is small we want
+        //the AI to make smaller corrections. 
         float steerAmount = angleToTarget / 45.0f;
 
         //Clamp steering to between -1 and 1.
@@ -221,7 +228,10 @@ public class CarAIHandler : MonoBehaviour
         if (topDownCarController.GetVelocityMagnitude() > maxSpeed)
             return 0;
 
-        //Apply throttle forward based on how much the car wants to turn. If it's a sharp turn this will cause the car to apply less speed forward. We store this as reduceSpeedDueToCornering so we can use it togehter with the skill level
+        //Apply throttle forward based on how much the car wants to turn.
+        //If it's a sharp turn this will cause the car to apply less speed
+        //forward. We store this as reduceSpeedDueToCornering so we can use
+        //it togehter with the skill level
         float reduceSpeedDueToCornering = Mathf.Abs(inputX) / 1.0f;
 
         //Apply throttle based on cornering and skill.
@@ -239,7 +249,7 @@ public class CarAIHandler : MonoBehaviour
             else if (stuckCheckCounter > 3)
                 throttle = throttle * -1;
         }
-
+        //Debug.Log(throttle);
         //Apply throttle based on cornering and skill.
         return throttle;
     }
@@ -288,7 +298,7 @@ public class CarAIHandler : MonoBehaviour
         if (raycastHit2d.collider != null)
         {
             //Draw a red line showing how long the detection is, make it red since we have detected another car
-            Debug.DrawRay(transform.position, transform.up * 12, Color.red);
+           // Debug.DrawRay(transform.position, transform.up * 12, Color.red);
 
             position = raycastHit2d.collider.transform.position;
             otherCarRightVector = raycastHit2d.collider.transform.right;
@@ -297,7 +307,7 @@ public class CarAIHandler : MonoBehaviour
         else
         {
             //We didn't detect any other car so draw black line with the distance that we use to check for other cars. 
-            Debug.DrawRay(transform.position, transform.up * 12, Color.black);
+         //   Debug.DrawRay(transform.position, transform.up * 12, Color.black);
         }
 
         //No car was detected but we still need assign out values so lets just return zero. 
@@ -371,6 +381,7 @@ public class CarAIHandler : MonoBehaviour
                  
                     break;
                 case AIModel.DecisionTree:
+                    temporaryWaypoints = decisionTree.PathFinding(currentWaypoint.transform.position);
                     break;
 
             }

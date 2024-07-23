@@ -10,12 +10,20 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -900553251129613380, guid: d017faad03b9aa946ab12ed85bb3607f, type: 3}
       propertyPath: isDebugActiveForCar
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 733638173380642315, guid: d017faad03b9aa946ab12ed85bb3607f, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 8acb99d4a398e044a9004b46c7df8484, type: 3}
+    - target: {fileID: 2908712258592149612, guid: d017faad03b9aa946ab12ed85bb3607f, type: 3}
+      propertyPath: isDebugActiveForCar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3364370285582861605, guid: d017faad03b9aa946ab12ed85bb3607f, type: 3}
+      propertyPath: isDebugActiveForCar
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6558350185083141112, guid: d017faad03b9aa946ab12ed85bb3607f, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -70,7 +78,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8660823105377264488, guid: d017faad03b9aa946ab12ed85bb3607f, type: 3}
       propertyPath: model
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

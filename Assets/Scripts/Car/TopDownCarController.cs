@@ -145,7 +145,6 @@ public class TopDownCarController : MonoBehaviour
 
     public void SetInputVector(Vector2 inputVector)
     {
-        Debug.Log(inputVector);
         steeringInput = inputVector.x;
         accelerationInput = inputVector.y;
     }

@@ -90,7 +90,7 @@ public class SelectCarUIHandler : MonoBehaviour
         List<string> uniqueNames = names.ToList<string>();
 
         //Add AI drivers
-        for (int i = 2; i < 3; i++)
+        for (int i = 2; i < 5; i++)
         {
             string driverName = uniqueNames[Random.Range(0, uniqueNames.Count)];
             uniqueNames.Remove(driverName);

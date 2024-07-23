@@ -37,7 +37,6 @@ public class DrawPathHandler : MonoBehaviour
             {
                 if (nextWayPoint != null)
                     Gizmos.DrawLine(waypoint.transform.position, nextWayPoint.transform.position);
-
             }
 
         }

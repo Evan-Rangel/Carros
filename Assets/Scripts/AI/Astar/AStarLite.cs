@@ -59,7 +59,7 @@ public class AStarLite : MonoBehaviour
                     //Ignore player cars, they are not obstacles
                     if (hitCollider2D.transform.root.CompareTag("Player"))
                         continue;
-                    if (hitCollider2D.transform.CompareTag("CheckPoint"))
+                    if (hitCollider2D.transform.CompareTag("CheckPoint")|| hitCollider2D.transform.CompareTag("Waypoint"))
                         continue;
 
                     //Mark as obstacle

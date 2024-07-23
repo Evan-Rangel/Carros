@@ -518,6 +518,37 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &1097091632132849312
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6582631409649921410}
+  m_Layer: 0
+  m_Name: Down
+  m_TagString: Untagged
+  m_Icon: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6582631409649921410
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1097091632132849312}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 765702678253185833}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3334470942234735857
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,6 +579,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6134947731596241380}
+  - {fileID: 6582631409649921410}
   - {fileID: 4302347241821069800}
   - {fileID: 6574131594413518249}
   m_Father: {fileID: 6558350185343971732}
@@ -6099,7 +6131,7 @@ Transform:
   m_GameObject: {fileID: 6264634268254044564}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0, z: 0}
+  m_LocalPosition: {x: 0.75, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11495,7 +11527,7 @@ Transform:
   m_GameObject: {fileID: 6558350185343971735}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20.95, y: 4.42, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11671,11 +11703,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de5c6a6003fbcb34ca1d5e1602eb5370, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  model: 1
+  model: 2
   aiMode: 1
   maxSpeed: 16
   isAvoidingCars: 1
   skillLevel: 1
+  targetPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &3364370285582861605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11701,7 +11734,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f9b376503fc8114d81a729b235a38d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDebugActiveForCar: 1
+  isDebugActiveForCar: 0
 --- !u!114 &2908712258592149612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11714,13 +11747,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dc8663bba015aa4b9f40a030839879c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  raycastPositions:
+  rayPoints:
   - {fileID: 6134947731596241380}
   - {fileID: 4302347241821069800}
   - {fileID: 6574131594413518249}
-  raycastDistance: 5
-  pos: {x: 0, y: 0}
-  target: {fileID: 0}
+  - {fileID: 6582631409649921410}
+  ignoreLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  isDebugActiveForCar: 0
 --- !u!1 &6558350185460239946
 GameObject:
   m_ObjectHideFlags: 0
@@ -16677,7 +16712,7 @@ Transform:
   m_GameObject: {fileID: 6674996647108681894}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0, z: 0}
+  m_LocalPosition: {x: -0.75, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17022,7 +17057,7 @@ Transform:
   m_GameObject: {fileID: 9067287560694553287}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.4, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
